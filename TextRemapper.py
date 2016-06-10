@@ -32,7 +32,7 @@ class TextRemapper():
             fo.close()
         except IOError, e:
             print 'Could not execute TextRemapper object.', e
-            return 0
+            return 1
         self.__process_blocks()
 
     def __get_block_size(self):
@@ -63,7 +63,7 @@ class TextRemapper():
             blocks, lastblock = self.__calc_blocks()
         except OSError, e:
             print e
-            return 0
+            return 1
         print 'number of blocks: ', blocks
         fo = io.open(self.filename, 'r+b')
         file_obj = io.BufferedRandom(fo)
@@ -72,7 +72,7 @@ class TextRemapper():
             file_obj.truncate(lastblock)
             file_obj.close()
             print 'Success'
-            return 1
+            return 0
         elif blocks > 1:
             for i in xrange(blocks-1):
                 chunk = file_obj.read(self.block_size)
@@ -84,5 +84,5 @@ class TextRemapper():
             file_obj.truncate(self.file_size)
             file_obj.close()
             print 'Success'
-            return 1
+            return 0
 
