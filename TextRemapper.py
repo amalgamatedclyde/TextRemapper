@@ -5,6 +5,7 @@ import re
 import io
 import os
 from math import ceil
+from platform import uname
 
 """ USAGE:
     1- from TextRemapper import TextRemapper
@@ -36,7 +37,7 @@ class TextRemapper():
         self.__process_blocks()
 
     def __get_block_size(self):
-        """not tested on Windows"""
+        """not used on Windows because it would require admin privileges"""
         try:
             s = check_output(['stat', self.filename])
         except CalledProcessError:
@@ -59,6 +60,8 @@ class TextRemapper():
         return True
 
     def __process_blocks(self):
+        if uname()[0] != 'Windows':
+            self.block_size = self.__get_block_size()
         try:
             blocks, lastblock = self.__calc_blocks()
         except OSError, e:
