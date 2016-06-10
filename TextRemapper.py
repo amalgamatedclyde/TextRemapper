@@ -6,10 +6,16 @@ import io
 import os
 from math import ceil
 
-
+""" USAGE:
+    1- from TextRemapper import TextRemapper
+    2- instantiate the TextRemapper object with the full pathname and the target and replacement strings:
+    tr = TextRemapper(<full_pathname>, <target string>, <replacement string>)
+    3- call the instance:
+    tr()
+    """
 class TextRemapper():
     """TextRemapper is meant for string replacement in large text files.
-        It replaces a source string with a destination string block by block
+        It replaces a target string with a replacement string block-wise
         without reading the entire file into memory. The operation is
         extremely fast."""
 
@@ -69,9 +75,9 @@ class TextRemapper():
             return 1
         elif blocks > 1:
             for i in xrange(blocks-1):
-                chunk = file_obj.read(4096)
+                chunk = file_obj.read(self.block_size)
                 new_chunk = chunk.replace(self.str1, self.str2)
-                file_obj.seek(-4096, 1)
+                file_obj.seek(-1*self.block_size, 1)
                 file_obj.write(new_chunk)
                 file_obj.flush()
             self.__last_block(lastblock, file_obj)
