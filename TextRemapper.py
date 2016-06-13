@@ -61,7 +61,10 @@ class TextRemapper():
 
     def __process_blocks(self):
         if uname()[0] != 'Windows':
+            print 'fetching block size'
             self.block_size = self.__get_block_size()
+        elif uname()[0] == 'Windows':
+            'detected Windows OS: setting block size to defalt 4096'
         try:
             blocks, lastblock = self.__calc_blocks()
         except OSError, e:
